@@ -12,7 +12,7 @@ function isAnagram(str1, str2) {
     return false;
   }
 
-  const sortedStr1 = cleanStr1.split("").sort().join("");
+  const sortedStr1 = cleanStr1.split("").sort().join(""); 4
   const sortedStr2 = cleanStr2.split("").sort().join("");
 
   return sortedStr1 === sortedStr2;
