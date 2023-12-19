@@ -4,7 +4,30 @@
  * the function should return a promise just like before
  */
 
-function sleep(milliseconds) {
-}
+// function sleep(milliseconds) {
+//     return new Promise((resolve)=>{
 
-module.exports = sleep;
+//     });
+// }
+
+function busyWait(milliseconds) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(`Busy wait completed after ${milliseconds} milliseconds`);
+      }, milliseconds);
+    });
+  }
+  
+  // Example usage:
+  busyWait(3000)
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((error) => {
+      console.error(`Error: ${error}`);
+    });
+  
+  console.log("Hello");
+  
+
+// module.exports = sleep;
