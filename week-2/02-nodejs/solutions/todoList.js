@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const app = express();
 app.use(bodyParser.json());
-// Hello
+
 app.get("/todos", (req, res) => {
   fs.readFile("todos.json", "utf8", (err, data) => {
     if (err) throw err;
