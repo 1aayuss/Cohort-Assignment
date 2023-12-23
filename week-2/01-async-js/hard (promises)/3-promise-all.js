@@ -42,7 +42,6 @@ function calculateTime(t1, t2, t3) {
       console.error(error);
     });
 }
-
-calculateTime(3, 6, 9);
+// calculateTime(3, 6, 9);
 
 module.exports = calculateTime;
