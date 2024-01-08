@@ -1,6 +1,7 @@
 //  Returns a json web token with username encrypted
 //  Returns an array of all users if user is signed in (token is correct) Returns 403 status code if not
 
+// Ayush makwana
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const { boolean } = require("zod");
@@ -20,6 +21,7 @@ function userExists(username, password) {
   console.log(temp === 0);
   return temp;
 }
+
 app.post("/signin", (req, res) => {
   // const name = req.body.name;
   const username = req.body.username;
