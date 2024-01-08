@@ -4,67 +4,65 @@ const mongoose = require("mongoose");
 const jwtPassword = "123456";
 
 mongoose.connect(
-  "your_mongo_url",
+  "mongodb+srv://admin:ew74m46SJk7W8TC1@cluster0.tqk2hhe.mongodb.net/test"
 );
-
-const User = mongoose.model("User", {
-  name: String,
-  username: String,
-  pasword: String,
-});
 
 const app = express();
 app.use(express.json());
+const userSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  password: String,
+});
+const User = mongoose.model("User", userSchema);
 
-function userExists(username, password) {
-  // should check in the database
+async function userExists(email) {
+  return await User.findOne({ email: email });
 }
 
 app.post("/signin", async function (req, res) {
-  const username = req.body.username;
+  const name = req.body.name;
+  const email = req.body.email;
   const password = req.body.password;
 
-  if (!userExists(username, password)) {
+  if (await userExists(email)) {
     return res.status(403).json({
-      msg: "User doesnt exist in our in memory db",
+      msg: "User exist!",
     });
   }
 
-  var token = jwt.sign({ username: username }, "shhhhh");
+  const u = new User({
+    name: name,
+    email: email,
+    password: password,
+  });
+  u.save().then(() => console.log("saved"));
+
+  var token = jwt.sign({ email: email }, jwtPassword);
   return res.json({
     token,
   });
 });
 
-app.get("/users", function (req, res) {
-  const token = req.headers.authorization;
+app.get("/users", async function (req, res) {
   try {
+    const token = req.headers.authorization;
+
     const decoded = jwt.verify(token, jwtPassword);
-    const username = decoded.username;
-    // return a list of users other than this username from the database
+    const email = decoded.email;
+    // console.log("1");
+    const users = await User.find();
+    // console.log("2");
+
+    return res.status(200).json(users);
+    // console.log("3");
   } catch (err) {
     return res.status(403).json({
       msg: "Invalid token",
     });
   }
+
+  // res.send("hello");
 });
 
 app.listen(3000);
-
-// const mongoose = require("mongoose");
-// mongoose.connect(
-//   "mongodb+srv://admin:ew74m46SJk7W8TC1@cluster0.tqk2hhe.mongodb.net/"
-// );
-
-// const user = mongoose.model("Users", {
-//   name: String,
-//   email: String,
-//   password: String,
-// });
-
-// const User = new user({
-//   name: "Ayush",
-//   email: "ayush@gmail.com",
-//   password: "123456",
-// });
-// User.save().then(() => console.log("saved"));
